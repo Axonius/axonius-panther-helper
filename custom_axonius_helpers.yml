@@ -1,0 +1,4 @@
+AnalysisType: global
+Filename: custom_axonius_helpers.py
+GlobalID: custom_axonius_helpers
+Description: find_username, find_hostname, find_ip, find_cloud_id, user_ip_association, get_hostname_vulnerabilities, find_cs_aid
