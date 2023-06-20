@@ -153,7 +153,7 @@ def find_hostname(hostname: str) -> dict:
         return {"ERROR": str(error)}
 
 
-def find_ip(ip_address: str) -> dict:
+def find_ip(ip_address: str) -> dict:  # pylint: disable=R1260,R0911
     """
     Gets an IP address and return details fetched from Axonius.
 
@@ -198,6 +198,35 @@ def find_ip(ip_address: str) -> dict:
                     "users": ip_users,
                 }
                 return out
+
+        query = f'("specific_data.data.network_interfaces.ips" == regex("{ip_address}", "i"))'
+        fields = [
+            "specific_data.data.last_seen",
+            "specific_data.data.email",
+        ]
+        params = {"filter": query, "fields": {"devices": fields}}
+        try:
+            res = requests.get(url=f"{url}/api/devices", headers=headers, json=params, timeout=180)
+        except requests.exceptions.ConnectionError as error:
+            return {"ERROR": f"Error connecting to {url} - {error}"}
+        if res.status_code == 200:
+            res = res.json()
+            if res.get("data"):
+                res = res.get("data")
+                ip_users = []
+                for record in res:
+                    ip_users.append(record.get("attributes").get("specific_data.data.email"))
+
+                res = res[0].get("attributes")
+                out = {
+                    "ip_address": ip_address,
+                    "office_ip_address": len(ip_users) >= 10,
+                    "last_seen:": res.get("specific_data.data.last_seen"),
+                    "users_count": len(ip_users),
+                    "users": ip_users,
+                }
+                return out
+
             return {"ERROR": f"{ip_address} was not found."}
         return {"ERROR": f"{url}/api/users response is {res.status_code} {res.content}"}
     except Exception as error:  # pylint: disable=broad-except
