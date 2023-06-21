@@ -300,11 +300,15 @@ def user_ip_association(ip_address: str, username: str) -> bool:
         True of this IP address is related to the user else it returns False.
     """
     ax_ip = find_ip(ip_address)
-    if not ax_ip.get("ERROR") and (
-        username in (item for sublist in ax_ip.get("users") for item in sublist)
-        or username in ax_ip.get("users")
-    ):
-        return True
+    if not ax_ip.get("ERROR"):
+        for sublist in ax_ip.get("users"):
+            if isinstance(sublist, list):
+                for _sub_item in sublist:
+                    if username in _sub_item:
+                        return True
+            else:
+                if username in sublist:
+                    return True
     return False
 
 
