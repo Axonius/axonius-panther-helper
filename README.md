@@ -1,6 +1,6 @@
 # Axonius-Panther-Helper
 
-This repository contains a set of custom helpers designed to facilitate integration between Panther SIEM and Axonius (initially announced in [a blog post](https://www.axonius.com/blog/integrating-axonius-asset-inventory-panther-real-time-detections-caasm-siem-enrichment)). These custom helpers provide a variety of functions for user and device search operations that can be used to leverage the Axonius API.
+This repository contains a set of custom helpers designed to facilitate integration between Panther SIEM and Axonius (initially announced in [a blog post](https://www.axonius.com/blog/integrating-axonius-asset-inventory-panther-real-time-detections-caasm-siem-enrichment) and presented in [a webinar](https://www.youtube.com/watch?v=HylBky8twWI)). These custom helpers provide a variety of functions for user and device search operations that can be used to leverage the Axonius API.
 
 ## Table of Contents
 
