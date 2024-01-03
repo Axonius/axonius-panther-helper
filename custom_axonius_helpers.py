@@ -199,10 +199,10 @@ def find_ip(ip_address: str) -> dict:  # pylint: disable=R1260,R0911
                 }
                 return out
 
-        query = f'("specific_data.data.network_interfaces.ips" == regex("{ip_address}", "i"))'
+        query = f'("specific_data.data.public_ips" == regex("{ip_address}", "i"))'
         fields = [
             "specific_data.data.last_seen",
-            "specific_data.data.email",
+            "specific_data.data.last_used_users_mail_association",
         ]
         params = {"filter": query, "fields": {"devices": fields}}
         try:
@@ -215,7 +215,11 @@ def find_ip(ip_address: str) -> dict:  # pylint: disable=R1260,R0911
                 res = res.get("data")
                 ip_users = []
                 for record in res:
-                    ip_users.append(record.get("attributes").get("specific_data.data.email"))
+                    ip_users.append(
+                        record.get("attributes").get(
+                            "specific_data.data.last_used_users_mail_association"
+                        )
+                    )
 
                 res = res[0].get("attributes")
                 out = {
